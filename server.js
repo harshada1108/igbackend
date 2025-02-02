@@ -16,7 +16,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect("mongodb+srv://harshapolshetty333:hp%401108@igbackendcluster.d2isi.mongodb.net/")
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
