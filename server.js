@@ -20,15 +20,40 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Server is running");
 });
-mongoose.connect("mongodb+srv://bt22cse016:igbackend2025@igbackend.m3vrs.mongodb.net/test?retryWrites=true&w=majority", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000,  // Increase to 30 seconds
-})
-.then(() => console.log("✅ MongoDB connected"))
-.catch(err => {
-  console.error("❌ MongoDB connection error:", err);
-});
+const connectDB = async () => {
+  try {
+    const mongoURI = process.env.MONGODB_URI || "mongodb+srv://bt22cse016:igbackend2025@igbackend.m3vrs.mongodb.net/test?retryWrites=true&w=majority";
+    
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 30000,
+      keepAlive: true,
+    });
+    
+    console.log("✅ MongoDB connected successfully");
+    
+    // Handle connection errors after initial connection
+    mongoose.connection.on('error', (err) => {
+      console.error('MongoDB connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      console.log('MongoDB disconnected. Attempting to reconnect...');
+    });
+
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err);
+    // Retry connection after 5 seconds
+    setTimeout(connectDB, 5000);
+  }
+};
+
+// Connect to MongoDB
+connectDB();
+
 
 
 // Configure Multer Storage for Cloudinary
@@ -498,8 +523,25 @@ app.get("/fetch-schedules/:date/:team1?", async (req, res) => {
   }
 });
 
-
-// Start Server
-app.listen(5001, () => {
-  console.log("Server running on port 5001");
+const PORT = process.env.PORT || 5001;
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+// Handle server errors
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
+    process.exit(1);
+  } else {
+    console.error('Server error:', error);
+  }
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit the process, but log the error
+});
+
+module.exports = app;
