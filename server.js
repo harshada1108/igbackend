@@ -16,16 +16,17 @@ app.use(cors());
 
 app.use(bodyParser.json());
 // Connect to MongoDB
-mongoose.connect("mongodb+srv://harshapolshetty333:hp%401108@igbackendcluster.d2isi.mongodb.net/")
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
 
-
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+mongoose.connect("mongodb+srv://harshapolshetty333:hp%401108@igbackendcluster.d2isi.mongodb.net/", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000,  // Increase to 30 seconds
+})
+.then(() => console.log("✅ MongoDB connected"))
+.catch(err => {
+  console.error("❌ MongoDB connection error:", err);
 });
+
 
 // Configure Multer Storage for Cloudinary
 const storage = new CloudinaryStorage({
