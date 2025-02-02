@@ -8,7 +8,12 @@ const cloudinary = require("cloudinary").v2;
 const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+ 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true // Enable credentials if cookies are used
+}));
 // app.use((req, res, next) => {
 //   console.log(`${req.method} ${req.url}`);
 //   next();
@@ -25,9 +30,9 @@ const connectDB = async () => {
     const mongoURI = process.env.MONGODB_URI || "mongodb+srv://bt22cse016:igbackend2025@igbackend.m3vrs.mongodb.net/test?retryWrites=true&w=majority";
     
     await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 30000,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      // serverSelectionTimeoutMS: 30000,
       
     });
     
