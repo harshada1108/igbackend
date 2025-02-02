@@ -17,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 // Connect to MongoDB
 
-mongoose.connect("mongodb+srv://username:password@igbackendcluster.d2isi.mongodb.net/test?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://bt22cse016:igbackend2025@igbackend.m3vrs.mongodb.net/test?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverSelectionTimeoutMS: 30000,  // Increase to 30 seconds
