@@ -16,7 +16,10 @@ app.use(cors());
 
 app.use(bodyParser.json());
 // Connect to MongoDB
-
+// Basic route for testing
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 mongoose.connect("mongodb+srv://bt22cse016:igbackend2025@igbackend.m3vrs.mongodb.net/test?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
