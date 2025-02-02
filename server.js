@@ -28,9 +28,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 30000,
-      keepAlive: true,
+      
     });
     
     console.log("✅ MongoDB connected successfully");
